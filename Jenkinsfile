@@ -41,7 +41,7 @@ pipeline {
 
     post {
         success {
-            echo '✅ WordPress Deployment Successful!'
+            echo '✅ WordPress Deploymenti Is Successful!'
         }
 
         failure {
