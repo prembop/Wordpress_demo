@@ -1,9 +1,8 @@
 pipeline {
-
     agent any
 
     environment {
-        PROJECT_DIR = "/opt/Wordpress_demo"
+        DEPLOY_DIR = "/deployment"
     }
 
     stages {
@@ -14,20 +13,12 @@ pipeline {
             }
         }
 
-        stage('Copy Files') {
-            steps {
-                sh '''
-                cp docker-compose.yml ${PROJECT_DIR}/
-                '''
-            }
-        }
-
         stage('Deploy') {
             steps {
                 sh '''
-                cd ${PROJECT_DIR}
+                cp docker-compose.yml ${DEPLOY_DIR}/
 
-                docker-compose down
+                cd ${DEPLOY_DIR}
 
                 docker-compose up -d
                 '''
@@ -36,24 +27,17 @@ pipeline {
 
         stage('Verify') {
             steps {
-                sh '''
-                docker ps
-                '''
+                sh 'docker ps'
             }
         }
-
     }
 
     post {
-
         success {
-            echo "WordPress Deployment Successful!"
+            echo 'WordPress Deployment Successful!'
         }
-
         failure {
-            echo "Deployment Failed!"
+            echo 'Deployment Failed!'
         }
-
     }
-
 }
