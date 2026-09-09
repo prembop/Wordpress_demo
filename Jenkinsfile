@@ -16,28 +16,36 @@ pipeline {
         stage('Deploy') {
             steps {
                 sh '''
-                cp docker-compose.yml ${DEPLOY_DIR}/
+                echo "Deploying WordPress..."
 
                 cd ${DEPLOY_DIR}
 
-                docker-compose up -d
+                git pull origin main
+
+                docker compose down
+
+                docker compose up -d
                 '''
             }
         }
 
         stage('Verify') {
             steps {
-                sh 'docker ps'
+                sh '''
+                echo "Running Containers:"
+                docker ps
+                '''
             }
         }
     }
 
     post {
         success {
-            echo 'WordPress Deployment Successful!'
+            echo '✅ WordPress Deployment Successful!'
         }
+
         failure {
-            echo 'Deployment Failed!'
+            echo '❌ Deployment Failed!'
         }
     }
 }
