@@ -1,10 +1,8 @@
-version: "3.8"
+name: wordpress_demo
 
 services:
-
   mysql:
     image: mysql:8.0
-    container_name: mysql-db
     restart: always
 
     environment:
@@ -21,14 +19,13 @@ services:
 
   wordpress:
     image: wordpress:latest
-    container_name: wordpress
     restart: always
 
     ports:
       - "8081:80"
 
     environment:
-      WORDPRESS_DB_HOST: mysql-db
+      WORDPRESS_DB_HOST: mysql
       WORDPRESS_DB_USER: wpuser
       WORDPRESS_DB_PASSWORD: Wp@123
       WORDPRESS_DB_NAME: wordpress
@@ -43,11 +40,8 @@ services:
       - wordpress-net
 
 volumes:
-
   mysql_data:
-
   wordpress_data:
 
 networks:
-
   wordpress-net:
