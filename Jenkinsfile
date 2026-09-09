@@ -29,6 +29,16 @@ pipeline {
             }
         }
 
+        stage('Deploy Theme') {
+            steps {
+                sh '''
+                echo "Deploying Custom Theme..."
+
+                docker cp ${DEPLOY_DIR}/theme/mytheme/. wordpress_demo-wordpress-1:/var/www/html/wp-content/themes/mytheme/
+                '''
+            }
+        }
+
         stage('Verify') {
             steps {
                 sh '''
@@ -41,7 +51,7 @@ pipeline {
 
     post {
         success {
-            echo '✅ WordPress Deploymenti Is Successful!'
+            echo '✅ WordPress Deployment Is Successful!'
         }
 
         failure {
